@@ -1,0 +1,53 @@
+NagiosPluginsNT
+
+0.4.2 (N/A)
+  * Prevent crash in check_snmp when querying a device that "forcibly closes
+    the connection"
+
+0.4.1 (2007-03-27)
+
+  * check_services_stopped should ignore spupdsvc service
+  * Always return critical (not warning) status from check_http when level 400-
+    500 HTTP status codes are encountered
+  * Fix unhandled exception in check_uptime for non-US date formats (thanks to 
+    Steve Thomas <sthomas at oritorservices dot com>)
+
+0.4.0 (2006-10-02)
+
+  * Now using SNMP Tools v0.3.4 by Malcolm Crowe (Thanks!)
+  * Created new check_snmp_if plugin to get interface statistics (Currently 
+    returns in/out bandwidth utilization)
+  * Miscellaneous code cleanup
+
+0.3.0 (2006-09-14)
+
+  * Deprecated check_alive in favor of check_ping
+  * Rewrote portions of PingPlugin class (make it easier to get statistics for 
+    multiple pings)
+  * Temporarily removed min/max values from performance output (need better 
+    implementation)
+  * Updated output and option parsing methods to accept multiple (comma-
+    separated) performance thresholds
+  * Catch System.Management.ManagementException on bad WMI queries
+  * Handle situation where Win32_OperatingSystem.LastBootUpTime is null in 
+    check_uptime
+  * Improve accuracy of response time calculation in TCPPlugin class
+  * Always return warning status from check_http when level 400-500 HTTP status 
+    codes are encountered
+  * Ignore invalid units (only [a-zA-Z] and % are allowed)
+
+0.2.0 (2006-08-31)
+
+  * If netbios domain is not specified in username, WMIPlugin class will use the 
+    local domain
+  * Output methods have been rewritten so that multiple text/perf values can be 
+    returned with a single service check
+  * Deprecated "disk" parameter in check_disk_free
+  * Fixed a bug in the SNMPPlugin class where temp files were not being deleted 
+    properly
+  * Added dont_fragment and ttl options to PingPlugin class
+  * Miscellaneous code cleanup
+
+0.1.0 (2006-08-25)
+
+  * Initial release
