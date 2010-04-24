@@ -11,6 +11,7 @@ copy %~dp0\LICENSE.txt %DIST_DIR%
 copy %~dp0\check_cpu\bin\Release\*.exe %DIST_DIR%
 copy %~dp0\check_disk_free\bin\Release\*.exe %DIST_DIR%
 copy %~dp0\check_disk_time\bin\Release\*.exe %DIST_DIR%
+copy %~dp0\check_disk_use\bin\Release\*.exe %DIST_DIR%
 copy %~dp0\check_http\bin\Release\*.exe %DIST_DIR%
 copy %~dp0\check_mem\bin\Release\*.exe %DIST_DIR%
 copy %~dp0\check_ping\bin\Release\*.exe %DIST_DIR%

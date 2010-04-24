@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("NagiosPluginsNT")]
-[assembly: AssemblyCopyright("Copyright (c) 2008, Michael T. Conigliaro")]
+[assembly: AssemblyCopyright("Copyright (c) 2009, Michael T. Conigliaro")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

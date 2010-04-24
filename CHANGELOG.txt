@@ -3,6 +3,8 @@ NagiosPluginsNT
 0.4.2 (N/A)
   * Prevent crash in check_snmp when querying a device that "forcibly closes
     the connection"
+  * Reimplement -d parameter in check_disk_*
+  * Add check_disk_use
 
 0.4.1 (2007-03-27)
 

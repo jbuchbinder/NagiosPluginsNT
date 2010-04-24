@@ -1,7 +1,7 @@
 /* check_tcp.cs - TCP connect() check plugin
  * 
  * NagiosPluginsNT - Nagios NRPE plugins for Windows NT
- * Copyright (c) 2008, Michael T. Conigliaro
+ * Copyright (c) 2009, Michael T. Conigliaro
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as 

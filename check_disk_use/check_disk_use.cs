@@ -1,4 +1,4 @@
-/* check_disk_free.cs - Disk space utilization (free) check plugin
+﻿/* check_disk_use.cs - Disk space utilization (use) check plugin
  * 
  * NagiosPluginsNT - Nagios NRPE plugins for Windows NT
  * Copyright (c) 2009, Michael T. Conigliaro
@@ -24,20 +24,20 @@ using NagiosPluginsNT;
 using Mono.GetOptions;
 using System.Management;
 
-namespace check_disk_free
-{    
+namespace check_disk_use
+{
     public class CheckDiskFreeWmiPluginOptions : WmiPluginOptions
     {
         [Option("Disk (default: all fixed)", 'd')]
         public string disk;
     }
 
-    class check_disk_free
+    class check_disk_use
     {
         static void Main(string[] args)
         {
             CheckDiskFreeWmiPluginOptions Options = new CheckDiskFreeWmiPluginOptions();
-            Options.label = "Disk Free";            
+            Options.label = "Disk Use";
             Options.units = "GB";
             Options.multiplier = .000000001M;
             Options.ProcessArgs(args);
@@ -47,19 +47,21 @@ namespace check_disk_free
 
             if (Options.disk != null)
             {
-                plugin.Query(String.Format("Select DeviceID, FreeSpace From Win32_LogicalDisk where DeviceID='{0}' and FreeSpace is not null", Options.disk));
+                plugin.Query(String.Format("Select DeviceID, FreeSpace, Size From Win32_LogicalDisk where DeviceID='{0}' and FreeSpace is not null", Options.disk));
             }
             else
             {
-                plugin.Query("Select DeviceID, FreeSpace From Win32_LogicalDisk where DriveType=3 and FreeSpace is not null");
+                plugin.Query("Select DeviceID, FreeSpace, Size From Win32_LogicalDisk where DriveType=3 and FreeSpace is not null");
             }
             if (plugin.ResultCollection.Count > 0)
             {
+                Decimal use;
                 foreach (ManagementObject mgtObject in plugin.ResultCollection)
                 {
                     if (mgtObject["FreeSpace"] != null)
                     {
-                        plugin.AppendValue(mgtObject["DeviceID"].ToString(), Convert.ToDecimal(mgtObject["FreeSpace"].ToString()));
+                        use = Convert.ToDecimal(mgtObject["Size"]) - Convert.ToDecimal(mgtObject["FreeSpace"]);
+                        plugin.AppendValue(mgtObject["DeviceID"].ToString(), use);
                     }
                 }
             }

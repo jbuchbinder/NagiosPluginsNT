@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "check_ping", "check_ping\ch
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "check_snmp_if", "check_snmp_if\check_snmp_if.csproj", "{89AA2354-3E07-45B6-93FC-C16DF623BFAD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "check_disk_use", "check_disk_use\check_disk_use.csproj", "{6952F009-0897-4FCD-8326-2E1D073AB002}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -97,6 +99,10 @@ Global
 		{89AA2354-3E07-45B6-93FC-C16DF623BFAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89AA2354-3E07-45B6-93FC-C16DF623BFAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89AA2354-3E07-45B6-93FC-C16DF623BFAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6952F009-0897-4FCD-8326-2E1D073AB002}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6952F009-0897-4FCD-8326-2E1D073AB002}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6952F009-0897-4FCD-8326-2E1D073AB002}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6952F009-0897-4FCD-8326-2E1D073AB002}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
