@@ -1,0 +1,111 @@
+h1. NagiosPluginsNT
+
+h2. About
+
+NagiosPluginsNT is a comprehensive collection of Nagios check plugins written in C# .NET.  The goal is to eventually have a Windows equivalent to the official Nagios plugins for *NIX, but with the power of WMI for Windows monitoring.
+
+For the uninitiated, WMI is Microsoft's implementation of the WBEM Standard.  In a nutshell, it provides an interface for remotely monitoring and controlling Windows machines, resulting in the ability to do (virtually) agentless monitoring and problem remediation.  Using NagiosPluginsNT's WMI plugins, you can monitor a whole network of Windows machines from a single NRPE daemon (similar to how check_by_ssh might be used in the *NIX world).
+
+NagiosPluginsNT was originally designed to be used with NRPE_NT but should work just as well on any other NRPE daemon for Windows.  This project has proven to be quite stable in my test lab (handling over 400 host/service checks from a single proxy) and has the following features:
+
+* Includes WMI check plugins for processor, memory, disk, and swap utilization, as well as system uptime, stopped services, and more.
+* Includes generic ICMP ping, SNMP, and TCP check plugins for monitoring non-Windows hosts.
+* Performance values are returned when appropriate.  Multiple text/performance values are also possible.
+* Plugins that return strings can accept simple regular expressions as their threshold parameters.
+* All plugins adhere to the official Nagios Plugin Development Guidelines.
+    
+NagiosPluginsNT was built upon a simple object-oriented framework, the goal of which is to handle low-level tasks that are common to all plugins (eg: checking thresholds, formatting output, etc.).  This should make it easy even for programming novices to extend the current plugins or create their own.  The framework has the following features:
+
+* Written in highly commented C# .NET.
+* Includes class libraries for ICMP, SNMP, TCP, WMI, and Windows registry checks.
+* Source code is available under the provisions of the GNU General Public License version 2.
+
+h2. Download
+
+"NagiosPluginsNT on NagiosExchange":http://exchange.nagios.org/directory/Plugins/Uncategorized/Operating-Systems/Windows-NRPE/NagiosPluginsNT/details
+
+h2. Installation
+
+Before you can use NagiosPluginsNT, you must configure Nagios to execute plugins on remote hosts. The steps required to do this are far beyond the scope of this project ("and already documented elsewhere":http://nagios.sourceforge.net/docs/nrpe/NRPE.pdf), but here’s a quick 30,000ft overview to get you started:
+
+# Install the check_nrpe plugin on your Nagios server and RTFM ;-)
+# Install an NRPE daemon (eg: NRPE_NT) on a Windows host and RTFM ;-)
+# Install NagiosPluginsNT on the Windows host by...
+## Extracting the NagiosPluginsNT binaries to a directory of your choice
+## Defining your check commands and configure your NRPE daemon appropriately (see the docs for your NRPE daemon)
+# Create the appropriate host/service checks on your Nagios server
+
+The NagiosPluginsNT plugins will now be executed by proxy in the following way: 
+
+  Nagios -> check_nrpe -> NRPE -> NagiosPluginsNT
+
+*NOTE:* NagiosPluginsNT requires the Microsoft .NET Framework Version >=2.0.
+
+h2. Plugin Usage
+
+Typical command line plugin usage will look something like this:
+
+<pre>check_snmp.exe -H 192.168.1.1 -o 1.3.6.1.2.1.1.1.0 -C public</pre>
+
+So your nrpe.cfg would have a line something like this:
+
+<pre>command[check_snmp]=\full\path\to\check_snmp.exe -H $ARG1$ -o $ARG2$ -C $ARG3$</pre>
+
+Available options will vary depending on the plugin.  That's why all plugins have a help command line option:
+
+<pre>plugin_name.exe --help</pre>
+
+You should also be aware of the verbose command line option, because this is the easiest way to troubleshoot problems.  As specified by the official Nagios plugin development guidelines, there are three levels of verbosity, each of which includes the levels below it:
+
+ * Error - Only show the error that caused the plugin to fail
+ * Info  - Show the most critical operations of the plugin (authentication, WMI queries used, etc.)
+ * Debug - Show everything, including low level operations such as threshold parsing
+
+I always recommend using level 3, because why not?
+
+<pre>plugin_name.exe -v 3</pre>
+
+h2. FAQ
+
+h3. How do I define my thresholds?
+
+"See the official Nagios threshold format":http://nagiosplug.sourceforge.net/developer-guidelines.html#THRESHOLDFORMAT
+
+h3. Why aren't my thresholds doing what I expect?
+
+  1. Execute the plugin with verbose output to see how your thresholds are being 
+     parsed.
+  1. See the answer to the previous question.
+
+h3. How do I use the @ character in my thresholds?
+
+If you try to use the @ character in your thresholds, you may see an error message like this:
+
+<pre>Error 2011: Unable to find response file</pre>
+
+The solution is to quote and escape your thresholds:
+
+<pre>-w "^@10:20"</pre>
+
+h3. How do I define multiple thresholds?
+
+For plugins that return multiple metrics, multiple thresholds can be separated by commas.  They will be applied in the order in which the metrics are returned:
+
+<pre>-w "^@10:20,^@30:40"</pre>
+
+h3. The units parameter doesn't actually change the output value.
+
+Yes, but a solution is planned for the future.  If you really need to use this right now, use the units parameter to change the UOM (eg: GB -> MB/KB/etc.), and use the multiplier option to change the value.
+
+h3. The disk parameter in check_disk_free doesn't do anything.
+
+Yes.  That's because in older versions, you had to tell the plugin what partition you were interested in.  Now the behavior is to return info for all
+fixed disks (a nice improvement in my opinion :-)).  The disk parameter was only left in there for backwards compatibility (just so the check wouldn't error out if you supplied the -d anyway).
+
+Due to popular demand, this parameter will be reimplemented in a future release.
+
+h2. Credits
+
+* NagiosPluginsNT is maintained by Michael T. Conigliaro.
+* NagiosPluginsNT uses the GetOptions library from the Mono project and the SNMP Tools library by "Malcolm Crowe":http://cis.paisley.ac.uk/crow-ci0/.
+* Nagios and the Nagios logo are registered trademarks of Ethan Galstad
