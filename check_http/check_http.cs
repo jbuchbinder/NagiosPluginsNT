@@ -44,7 +44,10 @@ namespace check_http
 
             TcpPlugin plugin = new TcpPlugin(Options);
             plugin.Connect();
-            plugin.Send(String.Format("GET {0} HTTP/1.0\n", Options.url));
+            
+            String requestString = String.Format("GET {0} HTTP/1.0\r\nAccept:*.*\r\n Host:{1}\r\n\r\n", Options.url, Options.hostname);
+            //plugin.Send(String.Format("GET {0} HTTP/1.0\n", Options.url));
+            plugin.Send(String.Format(requestString);
             String value = plugin.ReceiveBanner();            
             plugin.Disconnect();
 
